@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: netpol-allowaccess-ingress 
+  namespace: myapp # namespace name that this policy is applied to (destination)
+spec:
+  podSelector: {}  # all pods
+  policyTypes:     # deny all ingress traffics 
+    - Ingress
+  ingress:         # ingress allow list
+    - from:
+      - namespaceSelector: 
+          matchLabels:
+            kubernetes.io/metadata.name: ns1 # source namespace
+      - namespaceSelector: 
+          matchLabels:
+            kubernetes.io/metadata.name: ns2 # source namespace
+      ports:
+        - protocol: TCP
+          port: 443, 80
+        
